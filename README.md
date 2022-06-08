@@ -24,3 +24,6 @@ Username, Password, Retype Password (Register Button)
 
 **Halaman Cart:**
 Price, Name, Image, Total, Button, (Cart)
+
+**UI Colors**
+Cokelat Muda
