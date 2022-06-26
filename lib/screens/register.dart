@@ -42,7 +42,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     //Second Name
     final secondNameField = TextFormField(
       autofocus: false,
-      controller: firstNameEditingController,
+      controller: secondNameEditingController,
       keyboardType: TextInputType.name,
       onSaved: (value) {
         secondNameEditingController.text = value!;
@@ -146,7 +146,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Container(
             color: Colors.white,
             child: Padding(
-              padding: const EdgeInsets.all(36.0),
+              padding: const EdgeInsets.fromLTRB(36, 0, 36, 36),
               child: Form(
                 key: _formKey,
                 child: Column(
