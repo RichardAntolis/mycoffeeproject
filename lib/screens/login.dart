@@ -16,8 +16,11 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
 
+  String? errorMessage;
+  
   //Firebase
   final _auth = FirebaseAuth.instance;
+  
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
             return ("Password is required for login");
           }
           if (!regex.hasMatch(value)) {
-            return ("Enter Valid Password (Minimun 6 Characters)");
+            return ("Enter Valid Password (Minimum 6 Characters)");
           }
       },
       onSaved: (value) {
@@ -163,6 +166,8 @@ class _LoginScreenState extends State<LoginScreen> {
   void signIn(String email, String password) async{
     if (_formKey.currentState!.validate())
     {
+      try
+      {
       await _auth.
         signInWithEmailAndPassword(email: email, password: password).then((uid) => {
         Fluttertoast.showToast(msg: "Login Successful!"),
@@ -170,6 +175,34 @@ class _LoginScreenState extends State<LoginScreen> {
       }).catchError((e){
         Fluttertoast.showToast(msg: e!.message);
       });
+    }
+    on FirebaseAuthException catch (error) {
+        switch (error.code) {
+          case "invalid-email":
+            errorMessage = "Your email address appears to be malformed.";
+
+            break;
+          case "wrong-password":
+            errorMessage = "Your password is wrong.";
+            break;
+          case "user-not-found":
+            errorMessage = "User with this email doesn't exist.";
+            break;
+          case "user-disabled":
+            errorMessage = "User with this email has been disabled.";
+            break;
+          case "too-many-requests":
+            errorMessage = "Too many requests";
+            break;
+          case "operation-not-allowed":
+            errorMessage = "Signing in with Email and Password is not enabled.";
+            break;
+          default:
+            errorMessage = "An undefined Error happened.";
+        }
+        Fluttertoast.showToast(msg: errorMessage!);
+        print(error.code);
+      }
     }
   }
 
