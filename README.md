@@ -14,8 +14,7 @@ Category
 Profile
 
 **Halaman Depan:**
-Tampilan Welcome
-Tampilan Login & Register (Butuh Database)
+Tampilan Login & Register (Butuh Database) [V]
 
 **Halaman Login:**
 Username & Password (Login Button)
