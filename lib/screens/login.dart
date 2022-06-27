@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mycoffee/screens/home.dart';
+import 'package:mycoffee/screens/menubar.dart';
 import 'package:mycoffee/screens/register.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -99,10 +100,6 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
 
-
-    
-
-
     //Screen
     return Scaffold(
       
@@ -171,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
       await _auth.
         signInWithEmailAndPassword(email: email, password: password).then((uid) => {
         Fluttertoast.showToast(msg: "Login Successful!"),
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: ((context) => HomeScreen()))),
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: ((context) => MenuBottom()))),
       }).catchError((e){
         Fluttertoast.showToast(msg: e!.message);
       });
@@ -180,7 +177,6 @@ class _LoginScreenState extends State<LoginScreen> {
         switch (error.code) {
           case "invalid-email":
             errorMessage = "Your email address appears to be malformed.";
-
             break;
           case "wrong-password":
             errorMessage = "Your password is wrong.";

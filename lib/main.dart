@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mycoffee/screens/detailscreen.dart';
+import 'package:mycoffee/screens/menubar.dart';
+import 'package:mycoffee/screens/test.dart';
 import 'screens/login.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -26,7 +29,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.brown,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const LoginScreen(),
+      home: const DetailsPage(),
     );
   }
 }
