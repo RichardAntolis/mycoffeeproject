@@ -44,7 +44,6 @@ class _TestAreaState extends State<TestArea> {
     subTitle,
     price,
     context,
-    rating,
   }) {
     return GestureDetector(
       onTap: () {

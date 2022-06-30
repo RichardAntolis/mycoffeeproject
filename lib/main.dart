@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mycoffee/screens/category.dart';
+import 'package:mycoffee/screens/checkout.dart';
 import 'package:mycoffee/screens/detailscreen.dart';
+import 'package:mycoffee/screens/home.dart';
+import 'package:mycoffee/screens/homescreen.dart';
 import 'package:mycoffee/screens/menubar.dart';
 import 'package:mycoffee/screens/test.dart';
 import 'screens/login.dart';
@@ -29,7 +33,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.brown,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const DetailsPage(),
+      home: const LoginScreen(),
     );
   }
 }

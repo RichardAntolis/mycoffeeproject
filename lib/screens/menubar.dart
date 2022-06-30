@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mycoffee/screens/category.dart';
+import 'package:mycoffee/screens/checkout.dart';
 import 'package:mycoffee/screens/home.dart';
+import 'package:mycoffee/screens/homescreen.dart';
+import 'package:mycoffee/screens/profile.dart';
 
 class MenuBottom extends StatefulWidget {
   const MenuBottom({ Key? key }) : super(key: key);
@@ -16,13 +20,10 @@ class _MenuBottomState extends State<MenuBottom> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   static List<Widget> _widgetOption = <Widget> [
-    HomeScreen(),
-    Text("Page 2",
-    style: optionStyle,
-    ),
-    Text("Page 3",
-    style: optionStyle,
-    ),
+    HomeRoute(),
+    CategoriesRoute(),
+    CheckOut(),
+    Profile(),
   ];
 
   void _onItemTapped(int index) {
@@ -54,6 +55,13 @@ class _MenuBottomState extends State<MenuBottom> {
                 size: 30,
               ),
               label: "Home",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.category,
+                size: 30,
+              ),
+              label: "Cart",
             ),
             BottomNavigationBarItem(
               icon: Icon(
