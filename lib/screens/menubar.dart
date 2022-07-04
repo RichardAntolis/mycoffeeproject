@@ -6,23 +6,22 @@ import 'package:mycoffee/screens/homescreen.dart';
 import 'package:mycoffee/screens/profile.dart';
 
 class MenuBottom extends StatefulWidget {
-  const MenuBottom({ Key? key }) : super(key: key);
+  const MenuBottom({Key? key}) : super(key: key);
 
   @override
   State<MenuBottom> createState() => _MenuBottomState();
 }
 
 class _MenuBottomState extends State<MenuBottom> {
-
   int _selectedIndex = 0;
 
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
-  static List<Widget> _widgetOption = <Widget> [
+  static List<Widget> _widgetOption = <Widget>[
     HomeRoute(),
     CategoriesRoute(),
-    CheckOut(),
+    CheckOutL(),
     Profile(),
   ];
 
@@ -31,7 +30,6 @@ class _MenuBottomState extends State<MenuBottom> {
       _selectedIndex = index;
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +59,7 @@ class _MenuBottomState extends State<MenuBottom> {
                 Icons.category,
                 size: 30,
               ),
-              label: "Cart",
+              label: "Categories",
             ),
             BottomNavigationBarItem(
               icon: Icon(

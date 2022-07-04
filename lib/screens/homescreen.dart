@@ -1,10 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:mycoffee/dbservices.dart';
+import 'package:mycoffee/main.dart';
 import 'package:mycoffee/models/product.dart';
-import 'package:mycoffee/screens/detailview.dart';
+import 'package:mycoffee/screens/detailscreen.dart';
 import 'package:mycoffee/screens/login.dart';
+
+import '../models/usermodel.dart';
 
 class HomeRoute extends StatefulWidget {
   const HomeRoute({Key? key}) : super(key: key);
@@ -13,7 +17,30 @@ class HomeRoute extends StatefulWidget {
   State<HomeRoute> createState() => _HomeRouteState();
 }
 
+User? user = FirebaseAuth.instance.currentUser;
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  FirebaseApp app = await Firebase.initializeApp();
+}
+
 class _HomeRouteState extends State<HomeRoute> {
+  UserModel loggedInUser = UserModel();
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(user!.uid)
+        .get()
+        .then((value) {
+      loggedInUser = UserModel.fromMap(value.data());
+      setState(() {});
+    });
+    // FirebaseFirestore.instance.collection("featured").doc(product!.uid).get().then((value))
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget _buildWelcomeCoffee({firstName}) {
@@ -57,7 +84,7 @@ class _HomeRouteState extends State<HomeRoute> {
       return GestureDetector(
         onTap: () {
           Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => DetailList()));
+              .push(MaterialPageRoute(builder: (context) => DetailsPage()));
         },
         child: Container(
           width: MediaQuery.of(context).size.width * 0.4 + 10,
@@ -271,64 +298,74 @@ class _HomeRouteState extends State<HomeRoute> {
 
     return Scaffold(
         backgroundColor: Color(0xffEBDBCC),
-        body: SafeArea(
-            child: Container(
-                padding: EdgeInsets.all(24),
-                child: Column(children: <Widget>[
-                  //Welcome
-                  _buildWelcomeCoffee(firstName: "Richard"),
-                  SizedBox(
-                    height: 20,
-                  ),
+        body: ListView(
+          children: [
+            SafeArea(
+                child: Container(
+                    padding: EdgeInsets.all(24),
+                    child: Column(children: <Widget>[
+                      //Welcome
+                      _buildWelcomeCoffee(firstName: loggedInUser.firstName),
+                      SizedBox(
+                        height: 20,
+                      ),
 
-                  //Searching
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        color: Color(0xffDACABD),
-                        borderRadius: BorderRadius.circular(15)),
-                    child: TextField(
-                      decoration: InputDecoration(
-                          hintText: "Find your coffee...",
-                          hintStyle: TextStyle(color: Color(0xff3c4046)),
-                          border: InputBorder.none,
-                          prefixIcon: Icon(
-                            Icons.search,
-                            color: Colors.grey[500],
-                          )),
-                    ),
-                  ),
+                      //Searching
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                            color: Color(0xffDACABD),
+                            borderRadius: BorderRadius.circular(15)),
+                        child: TextField(
+                          decoration: InputDecoration(
+                              hintText: "Find your coffee...",
+                              hintStyle: TextStyle(color: Color(0xff3c4046)),
+                              border: InputBorder.none,
+                              prefixIcon: Icon(
+                                Icons.search,
+                                color: Colors.grey[500],
+                              )),
+                        ),
+                      ),
 
-                  SizedBox(
-                    height: 20,
-                  ),
+                      SizedBox(
+                        height: 20,
+                      ),
 
-                  SingleChildScrollView(
-                    padding: const EdgeInsets.all(8.0),
-                    child: StreamBuilder<QuerySnapshot>(
-                        stream: Database.getData(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasError) {
-                            return const Text("Error");
-                          } else if (snapshot.hasData || snapshot.data != null) {
-                            return ListView.separated(
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) {
-                                  DocumentSnapshot dsData =
-                                      snapshot.data!.docs[index];
-                                  String lvName = dsData['title'];
-                                  String lvSubTitle = dsData['subtitle'];
-                                  String lvImages = dsData['images'];
-                                  String lvPrice = dsData['price'];
-                                  return Column(
-                                    children: [
-                                      Container(
-                                          margin: EdgeInsets.fromLTRB(
-                                              0, 12.0, 0, 12.0),
-                                          child: SingleChildScrollView(
-                                              physics: BouncingScrollPhysics(),
-                                              scrollDirection: Axis.horizontal,
-                                               
+                      Container(
+                        child: Row(
+                          children: [
+                            Text("Featured", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
+                          ],
+                        ),
+                      ),
+
+                      SingleChildScrollView(
+                        padding: const EdgeInsets.all(8.0),
+                        child: StreamBuilder<QuerySnapshot>(
+                            stream: Database.getCoffee(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasError) {
+                                return const Text("Error");
+                              } else if (snapshot.hasData ||
+                                  snapshot.data != null) {
+                                return ListView.separated(
+                                    shrinkWrap: true,
+                                    itemBuilder: (context, index) {
+                                      DocumentSnapshot dsData =
+                                          snapshot.data!.docs[index];
+                                      String lvName = dsData['title'];
+                                      String lvSubTitle = dsData['subtitle'];
+                                      String lvImages = dsData['images'];
+                                      String lvPrice = dsData['price'];
+                                      return Column(
+                                        children: [
+                                          Container(
+                                              margin: const EdgeInsets.fromLTRB(
+                                                  0, 12.0, 0, 12.0),
+                                              child: SingleChildScrollView(
+                                                physics: BouncingScrollPhysics(),
+                                                scrollDirection: Axis.horizontal,
                                                 child: buildSingleItem(
                                                   context: context,
                                                   images: lvImages,
@@ -337,23 +374,77 @@ class _HomeRouteState extends State<HomeRoute> {
                                                   price: lvPrice,
                                                 ),
                                               )),
-                                    ],
-                                  );
-                                },
-                                separatorBuilder: (context, index) =>
-                                    SizedBox(height: 8.0),
-                                itemCount: snapshot.data!.docs.length);
-                          }
-                          return const Center(
-                            child: CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                Colors.brown,
-                              ),
-                            ),
-                          );
-                        }),
-                  )
-                ]))));
+                                        ],
+                                      );
+                                    },
+                                    separatorBuilder: (context, index) =>
+                                        SizedBox(height: 8.0),
+                                    itemCount: snapshot.data!.docs.length);
+                              }
+                              return const Center(
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    Colors.brown,
+                                  ),
+                                ),
+                              );
+                            }),
+                      )
+                    ]))),
+          ],
+        ));
+
+    //   SingleChildScrollView(
+    //     padding: const EdgeInsets.all(8.0),
+    //     child: StreamBuilder<QuerySnapshot>(
+    //         stream: Database.getData(),
+    //         builder: (context, snapshot) {
+    //           if (snapshot.hasError) {
+    //             return const Text("Error");
+    //           } else if (snapshot.hasData ||
+    //               snapshot.data != null) {
+    //             return ListView.separated(
+    //                 shrinkWrap: true,
+    //                 itemBuilder: (context, index) {
+    //                   DocumentSnapshot dsData =
+    //                       snapshot.data!.docs[index];
+    //                   String lvName = dsData['title'];
+    //                   String lvSubTitle = dsData['subtitle'];
+    //                   String lvImages = dsData['images'];
+    //                   String lvPrice = dsData['price'];
+    //                   return Column(
+    //                     children: [
+    //                       Container(
+    //                           margin: EdgeInsets.fromLTRB(
+    //                               0, 12.0, 0, 12.0),
+    //                           child: SingleChildScrollView(
+    //                             physics: BouncingScrollPhysics(),
+    //                             scrollDirection: Axis.horizontal,
+    //                             child: buildSingleItem(
+    //                               context: context,
+    //                               images: lvImages,
+    //                               title: lvName,
+    //                               subTitle: lvSubTitle,
+    //                               price: lvPrice,
+    //                             ),
+    //                           )),
+    //                     ],
+    //                   );
+    //                 },
+    //                 separatorBuilder: (context, index) =>
+    //                     SizedBox(height: 8.0),
+    //                 itemCount: snapshot.data!.docs.length);
+    //           }
+    //           return const Center(
+    //             child: CircularProgressIndicator(
+    //               valueColor: AlwaysStoppedAnimation<Color>(
+    //                 Colors.brown,
+    //               ),
+    //             ),
+    //           );
+    //         }),
+    //   )
+    // ]))));
   }
 
   Future<void> logout(BuildContext context) async {

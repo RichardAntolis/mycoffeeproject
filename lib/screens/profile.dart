@@ -77,15 +77,28 @@ class _ProfileState extends State<Profile> {
     );
 
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Profile'),
+        backgroundColor: Colors.brown,
+      ),
       backgroundColor: Color(0xffEBDBCC),
       body: ListView(
-        children: [detailProfile, SizedBox(height: 12.0), logoutButton],
+        children: [
+          SizedBox(height: 12.0),
+          Container(
+            child: Row(children: [
+              detailProfile,
+              SizedBox(height: 12.0),
+            ]),
+          )
+        ],
       ),
-      //Nama
-      //Nama2
-      //Email
-      //Logout Button
     );
+
+    //Nama
+    //Nama2
+    //Email
+    //Logout Button
   }
 
   Future<void> logout(BuildContext context) async {

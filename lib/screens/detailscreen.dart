@@ -1,17 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:mycoffee/screens/checkout.dart';
 
 import '../dbservices.dart';
 
 class DetailsPage extends StatefulWidget {
-  const DetailsPage({Key? key}) : super(key: key);
+
 
   @override
+  // ignore: no_logic_in_create_state
   State<DetailsPage> createState() => _DetailsPageState();
 }
 
 class _DetailsPageState extends State<DetailsPage> {
+
+  String? _title;
+  String? _subtitle;
+  String? _images;
+  String? _price;
+
   @override
   Widget build(BuildContext context) {
     final imageDetail = Card(
@@ -43,7 +51,7 @@ class _DetailsPageState extends State<DetailsPage> {
     );
     }
 
-    Widget _buildTitleDetail({title, subtitle, description})
+    Widget _buildTitleDetail({title, subtitle})
     {
       return Container(
         child: Card(
@@ -63,7 +71,7 @@ class _DetailsPageState extends State<DetailsPage> {
             children: [
               Expanded(
                   child: Text(
-                "$description",
+                "AAA",
               ))
             ],
           ),
@@ -161,16 +169,25 @@ class _DetailsPageState extends State<DetailsPage> {
       elevation: 5,
       borderRadius: BorderRadius.circular(5),
       color: Colors.brown,
-      child: MaterialButton(
-        padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-        minWidth: MediaQuery.of(context).size.width,
-        onPressed: () {},
-        child: Text(
-          "Add to Cart",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
-        ),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => CheckOutL()));
+        },
+        child: 
+          MaterialButton(
+            padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+            minWidth: MediaQuery.of(context).size.width,
+            onPressed: () {Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => CheckOutL()));},
+            child: Text(
+              "Add to Cart",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+          ),
+        
       ),
     );
 
@@ -188,7 +205,7 @@ class _DetailsPageState extends State<DetailsPage> {
         backgroundColor: Color(0xffEBDBCC),
         body: ListView(
         children: [
-          imageDetail,
+          _buildTitleDetail(title: _title, subtitle: _subtitle),
           SizedBox(height: 10),
           titleDetail,
           SizedBox(height: 15),

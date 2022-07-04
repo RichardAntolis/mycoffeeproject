@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:mycoffee/screens/home.dart';
+import 'package:mycoffee/screens/homescreen.dart';
 
-class CheckOut extends StatefulWidget {
-  const CheckOut({Key? key}) : super(key: key);
+class CheckOutL extends StatefulWidget {
+  const CheckOutL({Key? key}) : super(key: key);
 
   @override
-  State<CheckOut> createState() => _CheckOutState();
+  State<CheckOutL> createState() => _CheckOutState();
 }
 
-class _CheckOutState extends State<CheckOut> {
+class _CheckOutState extends State<CheckOutL> {
   @override
   Widget build(BuildContext context) {
     final checkoutList = Container(
@@ -137,7 +139,10 @@ class _CheckOutState extends State<CheckOut> {
         height: 20.0, 
         minWidth: 300.0, 
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => HomeScreen()));
+        },
         child: Text(
           "Pay Now",
           textAlign: TextAlign.center,
@@ -149,20 +154,12 @@ class _CheckOutState extends State<CheckOut> {
 
     return Scaffold(
       appBar: AppBar(
+        title: const Text('Cart'),
         backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.brown),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
       ),
       backgroundColor: Color(0xffEBDBCC),
       body: ListView(
         children: [
-          checkoutList,
-          checkoutList,
           checkoutList,
           dTotal,
           Container(
