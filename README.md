@@ -1,17 +1,18 @@
 # Kelompok 22 - MyCoffeeProject
 
 **C14170093 - Richard Baramuli A**
-Login [UI/[Done] Code/[Done]]
-Home [UI[In-Progress]/Code[X]]
+Login
+Register 
+Home 
+Cart
+Category
+Profile
 History
 Menu
 Order
 
 **C14170120 - Adythia Yunus**
-Register [UI[Done]/Code[Done]]
-Cart
-Category
-Profile
+
 
 **Halaman Depan:**
 Tampilan Login & Register (Butuh Database) [V]
