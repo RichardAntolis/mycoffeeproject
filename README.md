@@ -30,7 +30,7 @@ Price, Name, Image, Total, Button, (Cart)
 Cokelat Muda
 
 Firebase: https://console.firebase.google.com/u/3/project/mycoffee-f5173/overview
-Demo:
+Demo: https://drive.google.com/file/d/1xwP1f4cozctKsKoS7-5mXBO-IdGjzpM-/view?usp=sharing
 
 Referensi:
 1. Image: https://api.flutter.dev/flutter/widgets/Image-class.html
