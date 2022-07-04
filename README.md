@@ -15,7 +15,7 @@ Order
 
 
 **Halaman Depan:**
-Tampilan Login & Register (Butuh Database) [V]
+Tampilan Login & Register (Butuh Database)
 
 **Halaman Login:**
 Username & Password (Login Button)
