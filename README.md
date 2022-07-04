@@ -29,8 +29,6 @@ Price, Name, Image, Total, Button, (Cart)
 **UI Colors**
 Cokelat Muda
 
-#Firebase: https://console.firebase.google.com/u/3/project/mycoffee-f5173/overview
-
 #Demo: https://drive.google.com/file/d/1xwP1f4cozctKsKoS7-5mXBO-IdGjzpM-/view?usp=sharing
 
 Referensi:
