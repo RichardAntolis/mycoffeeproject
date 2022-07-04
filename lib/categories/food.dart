@@ -1,66 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:mycoffee/dbservices.dart';
 import 'package:mycoffee/screens/detailscreen.dart';
-import 'package:mycoffee/screens/login.dart';
-import '../models/usermodel.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class foodroute extends StatefulWidget {
+  const foodroute({ Key? key }) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<foodroute> createState() => _foodrouteState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  User? user = FirebaseAuth.instance.currentUser;
-  // Product? product = FirebaseAuth.instance.currentUser;
-  UserModel loggedInUser = UserModel();
-
-  @override
-  void initState() {
-    super.initState();
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(user!.uid)
-        .get()
-        .then((value) {
-      loggedInUser = UserModel.fromMap(value.data());
-      setState(() {});
-    });
-    // FirebaseFirestore.instance.collection("featured").doc(product!.uid).get().then((value))
-  }
-
+class _foodrouteState extends State<foodroute> {
   @override
   Widget build(BuildContext context) {
-    Widget buildCoffeeCategory({categoryName, isSelected}) {
-      return Padding(
-        padding: const EdgeInsets.only(left: 20),
-        child: Column(
-          children: [
-            Text(
-              categoryName,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: isSelected ? Color(0xffd17842) : Color(0xff52555a),
-              ),
-            ),
-            isSelected
-                ? Text(
-                    "",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xffd17842),
-                    ),
-                  )
-                : Text(""),
-          ],
-        ),
-      );
-    }
-
     Widget buildSingleItem({
       images,
       title,
@@ -177,81 +130,17 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     }
 
-    final introPage = Column(children: [
-      Text(
-        "Welcome to My Coffee",
-        style: TextStyle(
-            fontSize: 24, fontWeight: FontWeight.w600, color: Colors.black),
-      ),
-      Text("${loggedInUser.firstName} ${loggedInUser.secondName}",
-          style: TextStyle(
-              fontSize: 18, fontWeight: FontWeight.w600, color: Colors.black))
-    ]);
-
-    final categoryAvaialble = SingleChildScrollView(
-      physics:
-          const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: [
-          buildCoffeeCategory(
-            categoryName: "Featured",
-            isSelected: true,
-          ),
-          buildCoffeeCategory(
-            categoryName: "Coffee",
-            isSelected: false,
-          ),
-          buildCoffeeCategory(
-            categoryName: "Non-Coffee",
-            isSelected: false,
-          ),
-          buildCoffeeCategory(
-            categoryName: "Food",
-            isSelected: false,
-          ),
-          buildCoffeeCategory(
-            categoryName: "Water",
-            isSelected: false,
-          ),
-          buildCoffeeCategory(
-            categoryName: "Snacks",
-            isSelected: false,
-          ),
-        ],
-      ),
-    );
-
-    final searching = Container(
-      margin: EdgeInsets.fromLTRB(0, 12.0, 0, 12.0),
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        color: Color(0xffDACABD),
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: TextField(
-        decoration: InputDecoration(
-            hintText: "Find your coffee...",
-            hintStyle: TextStyle(color: Color(0xff3c4046)),
-            border: InputBorder.none,
-            prefixIcon: Icon(
-              Icons.search,
-              color: Colors.grey[500],
-            )),
-      ),
-    );
-
     return Scaffold(
         backgroundColor: Color(0xffEBDBCC),
         appBar: AppBar(
-          title: const Text('Coffee'),
+          title: const Text('Food'),
         backgroundColor: Colors.brown,
         ),
         body: 
         ListView(
           children: [
             StreamBuilder<QuerySnapshot>(
-                stream: Database.getFeatured(),
+                stream: Database.getFood(),
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     return const Text("Error");
@@ -297,11 +186,5 @@ class _HomeScreenState extends State<HomeScreen> {
                 }),
           ],
         ));
-  }
-
-  Future<void> logout(BuildContext context) async {
-    await FirebaseAuth.instance.signOut();
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => LoginScreen()));
   }
 }
